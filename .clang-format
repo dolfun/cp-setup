@@ -18,3 +18,5 @@ AlignAfterOpenBracket: BlockIndent
 
 AllowShortBlocksOnASingleLine: Never
 AllowShortFunctionsOnASingleLine: None
+
+DerivePointerAlignment: false

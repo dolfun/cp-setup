@@ -11,7 +11,7 @@ class y_combinator_result {
 
 public:
   template <typename T>
-  explicit y_combinator_result(T &&_f) : f { std::forward<T>(_f) } {
+  explicit y_combinator_result(T&& _f) : f { std::forward<T>(_f) } {
   }
 
   template <typename... Ts>
@@ -21,7 +21,7 @@ public:
 };
 
 template <typename F>
-decltype(auto) y_combinator(F &&f) {
+decltype(auto) y_combinator(F&& f) {
   return y_combinator_result<decay_t<F>> { std::forward<F>(f) };
 }
 
@@ -29,37 +29,37 @@ template <typename T>
 concept PrintableRange = rng::range<T> && !convertible_to<T, string>;
 
 template <PrintableRange T>
-ostream &operator<<(ostream &out, const T &r) {
-  for (const auto &v : r) out << v << ' ';
+ostream& operator<<(ostream& out, const T& r) {
+  for (const auto& v : r) out << v << ' ';
   return out;
 }
 
 template <PrintableRange T>
-istream &operator>>(istream &in, T &r) {
-  for (auto &v : r) in >> v;
+istream& operator>>(istream& in, T& r) {
+  for (auto& v : r) in >> v;
   return in;
 }
 
 namespace io {
 
 template <typename... Ts>
-inline void print(Ts &&...args) {
+inline void print(Ts&&... args) {
   ((cout << std::forward<Ts>(args) << ' '), ...);
 }
 
 template <typename... Ts>
-inline void println(Ts &&...args) {
+inline void println(Ts&&... args) {
   io::print(std::forward<Ts>(args)...);
   cout << '\n';
 }
 
 template <typename... Ts>
-inline void printf(std::format_string<Ts...> fmt, Ts &&...args) {
+inline void printf(std::format_string<Ts...> fmt, Ts&&... args) {
   cout << format(fmt, std::forward<Ts>(args)...);
 }
 
 template <typename... Ts>
-inline void printfln(std::format_string<Ts...> fmt, Ts &&...args) {
+inline void printfln(std::format_string<Ts...> fmt, Ts&&... args) {
   io::printf(fmt, std::forward<Ts>(args)...);
   cout << '\n';
 }
