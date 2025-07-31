@@ -53,6 +53,8 @@ inline void println(Ts&&... args) {
   cout << '\n';
 }
 
+#if __cplusplus >= 202302L
+
 template <typename... Ts>
 inline void printf(std::format_string<Ts...> fmt, Ts&&... args) {
   cout << format(fmt, std::forward<Ts>(args)...);
@@ -63,6 +65,8 @@ inline void printfln(std::format_string<Ts...> fmt, Ts&&... args) {
   io::printf(fmt, std::forward<Ts>(args)...);
   cout << '\n';
 }
+
+#endif
 
 }  // namespace io
 
