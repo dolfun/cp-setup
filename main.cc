@@ -5,26 +5,6 @@ using uint = unsigned int;
 using ull = unsigned long long;
 namespace rng = ranges;
 
-template <typename F>
-class y_combinator_result {
-  F f;
-
-public:
-  template <typename T>
-  explicit y_combinator_result(T&& _f) : f { std::forward<T>(_f) } {
-  }
-
-  template <typename... Ts>
-  decltype(auto) operator()(Ts... args) {
-    return f(ref(*this), std::forward<Ts>(args)...);
-  }
-};
-
-template <typename F>
-decltype(auto) y_combinator(F&& f) {
-  return y_combinator_result<decay_t<F>> { std::forward<F>(f) };
-}
-
 template <typename T>
 concept PrintableRange = rng::range<T> && !convertible_to<T, string>;
 
