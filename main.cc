@@ -1,52 +1,51 @@
 #include <bits/stdc++.h>
 using namespace std;
+namespace stdv = views;
+namespace stdr = ranges;
 using ll = long long;
 using uint = unsigned int;
 using ull = unsigned long long;
-namespace rng = ranges;
 
-template <typename T>
-concept PrintableRange = rng::range<T> && !convertible_to<T, string>;
+template <typename R>
+concept Printable = stdr::range<R> && !convertible_to<R, string_view>;
 
-template <PrintableRange T>
-ostream& operator<<(ostream& out, const T& r) {
+template <Printable R>
+ostream& operator<<(ostream& out, const R& r) {
   for (const auto& v : r) out << v << ' ';
   return out;
 }
 
-template <PrintableRange T>
-istream& operator>>(istream& in, T& r) {
+template <Printable R>
+istream& operator>>(istream& in, R& r) {
   for (auto& v : r) in >> v;
+  return in;
+}
+
+template <typename T, typename U>
+istream& operator>>(istream& in, pair<T, U>& p) {
+  return in >> p.first >> p.second;
+}
+
+template <typename... Ts>
+istream& operator>>(istream& in, tuple<Ts...>& t) {
+  [&]<size_t... Is>(index_sequence<Is...>) {
+    ((in >> get<Is>(t)), ...);
+  }(index_sequence_for<Ts...>{});
   return in;
 }
 
 namespace io {
 
 template <typename... Ts>
-inline void print(Ts&&... args) {
+void print(Ts&&... args) {
   ((cout << std::forward<Ts>(args) << ' '), ...);
 }
 
 template <typename... Ts>
-inline void println(Ts&&... args) {
+void println(Ts&&... args) {
   io::print(std::forward<Ts>(args)...);
   cout << '\n';
 }
-
-#if __cplusplus >= 202302L
-
-template <typename... Ts>
-inline void printf(std::format_string<Ts...> fmt, Ts&&... args) {
-  cout << format(fmt, std::forward<Ts>(args)...);
-}
-
-template <typename... Ts>
-inline void printfln(std::format_string<Ts...> fmt, Ts&&... args) {
-  io::printf(fmt, std::forward<Ts>(args)...);
-  cout << '\n';
-}
-
-#endif
 
 }  // namespace io
 
@@ -68,8 +67,6 @@ int main() {
   while (t--) {
     solve();
   }
-
-  return 0;
 }
 
 void solve() {}
